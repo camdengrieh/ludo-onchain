@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import "@pythnetwork/entropy-sdk-solidity/IEntropyConsumer.sol";
 import "@pythnetwork/entropy-sdk-solidity/IEntropy.sol";
+import "./Factory.sol";
 
 contract LudoGame is IEntropyConsumer {
     IEntropy public entropy;
@@ -33,14 +34,25 @@ contract LudoGame is IEntropyConsumer {
     event PlayerWon(address player);
     event GameFinished(address winner);
 
+    modifier onlyFactory() {
+        require(msg.sender == address(factory), "Only the factory can call this function");
+        _;
+    }
+
     constructor(address _creator, address _factory) {
-        entropy = IEntropy(0x123...); // Replace with actual Entropy contract address
-        provider = entropy.getDefaultProvider();
         factory = LudoFactory(_factory);
+        entropy = IEntropy(0x41c9e39574F40Ad34c79f1C99B66A45eFB830d4c); // Replace with actual Entropy contract address
+        provider = entropy.getDefaultProvider();
         players[0].addr = _creator;
         playerCount = 1;
         state = GameState.Waiting;
-        factory.recordPlayer(_creator);
+    }
+
+    function initialiseFirstPlayer(address _player) onlyFactory external {
+        players[0].addr = _player;
+        playerCount = 1;
+        state = GameState.Waiting;
+        factory.recordPlayer(_player);
     }
 
     function joinGame() external {
@@ -67,9 +79,8 @@ contract LudoGame is IEntropyConsumer {
     function rollDice() external {
         require(state == GameState.Playing, "Game is not in playing state");
         require(msg.sender == players[currentPlayerTurn].addr, "Not your turn");
-        
         uint256 fee = entropy.getFee(provider);
-        uint64 sequenceNumber = entropy.requestWithCallback{value: fee}(provider, abi.encodePacked(block.timestamp, msg.sender));
+        uint64 sequenceNumber = entropy.requestWithCallback{value: fee}(provider, keccak256(abi.encodePacked(block.timestamp, msg.sender)));
         lastSequenceNumber = sequenceNumber;
     }
 

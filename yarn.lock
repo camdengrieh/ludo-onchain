@@ -2839,6 +2839,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@pythnetwork/entropy-sdk-solidity@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "@pythnetwork/entropy-sdk-solidity@npm:1.5.0"
+  checksum: 3d0b29beb37c616d7cefd8eed71ea057f29128d243ee488851222e264041c498ab24283d2e8499c6af1072152e6cc11dab1168148667df1feff61ee48f933e1c
+  languageName: node
+  linkType: hard
+
 "@rainbow-me/rainbowkit@npm:2.1.0":
   version: 2.1.0
   resolution: "@rainbow-me/rainbowkit@npm:2.1.0"
@@ -3039,6 +3046,7 @@ __metadata:
     "@nomicfoundation/hardhat-network-helpers": ^1.0.6
     "@nomicfoundation/hardhat-verify": ^2.0.3
     "@openzeppelin/contracts": ^4.8.1
+    "@pythnetwork/entropy-sdk-solidity": ^1.5.0
     "@typechain/ethers-v5": ^10.1.0
     "@typechain/ethers-v6": ^0.5.1
     "@typechain/hardhat": ^9.1.0
